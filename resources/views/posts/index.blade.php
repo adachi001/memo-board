@@ -7,6 +7,13 @@
     <h1>Post List</h1>
 
     <a href="{{ route('posts.create') }}" class="btn btn-primary mb-3">Create Post</a>
+    <!-- 検索フォーム -->
+    <form action="{{ route('posts.index') }}" method="GET">
+        <input type="text" name="search" placeholder="タイトルを検索">
+        <button type="submit">検索</button>
+        <button href="{{ route('posts.index') }}" >戻る</button>
+
+    </form>
 
     @foreach ($posts as $post)
     <div class="card mb-3">
@@ -33,7 +40,7 @@
             @endforeach
 
             @if ($post->comments->count() > 3)
-            <a href="{{ route('posts.show', ['post' => $post->id]) }}" >
+            <a href="{{ route('posts.show', ['post' => $post->id]) }}">
                 <p>他 {{ $post->comments->count() - 3 }} 件のコメントがあります。</p>
             </a>
             @endif

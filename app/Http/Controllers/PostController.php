@@ -3,16 +3,25 @@
 // app/Http/Controllers/PostController.php
 
 namespace App\Http\Controllers;
+
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $posts = Post::getAllPosts();
         $posts = Post::with('comments')->latest()->paginate(10);
+        $query = Post::query();
+
+        // 検索キーワードがある場合はタイトルで検索
+        if ($request->has('search')) {
+            $query->where('title', 'like', '%' . $request->input('search') . '%');
+        }
+
+        $posts = $query->latest()->paginate(10);
         return view('posts.index', compact('posts'));
         
     }
