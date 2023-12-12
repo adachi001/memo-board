@@ -23,10 +23,12 @@ Route::get('/', function () {
 });
 
 Route::get('/posts', [PostController::class, 'index']);
-Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
-Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
-Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
-Route::get('/posts/{post}/comments', [CommentController::class, 'show'])->name('comments.show');
+Route::middleware(['auth', 'auth.user'])->group(function () {
+    Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+    Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+    Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::get('/posts/{post}/comments', [CommentController::class, 'show'])->name('comments.show');
+});
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);

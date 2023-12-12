@@ -37,7 +37,7 @@
         <div class="mt-3">
             <strong>Comments:</strong>
             @foreach ($post->comments->take(3) as $comment)
-            <p>{{ $comment->body }}</p>
+            <p>{{ $post->user->name }}:  {{ $comment->body }}</p>
             @endforeach
 
             @if ($post->comments->count() > 3)
