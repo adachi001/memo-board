@@ -20,6 +20,7 @@
         <div class="card-body">
             <h2 class="card-title">{{ $post->title }}</h2>
             <p class="card-text">{{ $post->content }}</p>
+            <p>投稿者: {{ $post->user->name }}</p> <!-- ユーザー名の表示 -->
 
             @if ($post->image)
             <img src="{{ asset('storage/' . $post->image) }}" class="img-fluid" alt="Post Image" width="70" height="70">

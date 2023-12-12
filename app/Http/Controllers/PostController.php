@@ -7,11 +7,13 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
     public function index(Request $request)
     {
+        $posts = Post::with('user')->get();
         $posts = Post::getAllPosts();
         $posts = Post::with('comments')->latest()->paginate(10);
         $query = Post::query();
@@ -35,9 +37,12 @@ class PostController extends Controller
     {
         // バリデーションなどの適切な処理を追加
 
-        $post = new Post;
-        $post->title = $request->input('title');
-        $post->content = $request->input('content');
+        $post = new Post([
+            'title' => $request->input('title'),
+            'content' => $request->input('content'),
+            // 他のフィールドをここで追加
+            'user_id' => Auth::id(), // ログインユーザーのIDを取得して関連付ける
+        ]);
 
         // 画像の処理
         if ($request->hasFile('image')) {
@@ -56,9 +61,9 @@ class PostController extends Controller
         return redirect('/posts')->with('success', 'Post created successfully!');
     }
 
-    public function show(Post $post)
+    public function show($id)
     {
-        // ビューを返すなど、詳細を実装する
+        $post = Post::findOrFail($id);
         return view('posts.show', ['post' => $post]);
     }
 }

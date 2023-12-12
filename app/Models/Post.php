@@ -10,7 +10,7 @@ use Image;
 
 class Post extends Model
 {
-    protected $fillable = ['title', 'content', 'image'];
+    protected $fillable = ['title', 'content', 'image', 'audio', 'user_id'];
 
 
     public function setImageAttribute($file)
@@ -30,5 +30,9 @@ class Post extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
