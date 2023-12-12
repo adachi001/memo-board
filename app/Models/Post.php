@@ -26,4 +26,9 @@ class Post extends Model
     {
         return self::latest()->get();
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
