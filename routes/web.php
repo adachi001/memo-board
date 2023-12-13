@@ -32,8 +32,8 @@ Route::middleware(['auth', 'auth.user'])->group(function () {
     Route::get('/posts/{post}/comments', [CommentController::class, 'show'])->name('comments.show');
     Route::post('/posts/{post}/like', [LikeController::class, 'like'])->name('posts.like');
     Route::delete('/posts/{post}/unlike', [LikeController::class, 'unlike'])->name('posts.unlike');
+    Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 });
-Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');

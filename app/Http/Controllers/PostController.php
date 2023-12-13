@@ -17,15 +17,29 @@ class PostController extends Controller
         $posts = Post::getAllPosts();
         $posts = Post::with('comments')->latest()->paginate(10);
         $query = Post::query();
+        $query = Post::with('user');
 
         // 検索キーワードがある場合はタイトルで検索
         if ($request->has('search')) {
             $query->where('title', 'like', '%' . $request->input('search') . '%');
         }
 
+        // ソートの条件を確認
+        $sortBy = $request->input('sort_by', 'created_at');
+        $sortOrder = $request->input('sort_order', 'desc');
+
+        // いいね数でソート
+        if ($sortBy === 'likes_count') {
+            $query->withCount('likes')->orderBy('likes_count', $sortOrder);
+        } else {
+            // 投稿日時でデフォルトソート
+            $query->orderBy($sortBy, $sortOrder);
+        }
+
+
         $posts = $query->latest()->paginate(10);
         return view('posts.index', compact('posts'));
-        
+
     }
 
     public function create()

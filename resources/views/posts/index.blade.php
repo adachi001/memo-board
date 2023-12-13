@@ -12,7 +12,12 @@
         <input type="text" name="search" placeholder="タイトルを検索">
         <button type="submit">検索</button>
         <button href="{{ route('posts.index') }}">戻る</button>
-
+        <!-- ソートリンク -->
+        <div>
+            <a href="{{ route('posts.index', ['sort_by' => 'created_at', 'sort_order' => 'desc']) }}">新しい順</a>
+            <a href="{{ route('posts.index', ['sort_by' => 'created_at', 'sort_order' => 'asc']) }}">古い順</a>
+            <a href="{{ route('posts.index', ['sort_by' => 'likes_count', 'sort_order' => 'desc']) }}">いいね数順</a>
+        </div>
     </form>
 
     @foreach ($posts as $post)
@@ -21,6 +26,7 @@
             <h2 class="card-title">{{ $post->title }}</h2>
             <p class="card-text">{{ $post->content }}</p>
             <p>投稿者: {{ $post->user->name }}</p> <!-- ユーザー名の表示 -->
+            <p>投稿日時: {{ $post->created_at }}</p>
 
             <!-- いいねボタン -->
             @auth
