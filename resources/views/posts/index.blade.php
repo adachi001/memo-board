@@ -11,7 +11,7 @@
     <form action="{{ route('posts.index') }}" method="GET">
         <input type="text" name="search" placeholder="タイトルを検索">
         <button type="submit">検索</button>
-        <button href="{{ route('posts.index') }}" >戻る</button>
+        <button href="{{ route('posts.index') }}">戻る</button>
 
     </form>
 
@@ -21,6 +21,25 @@
             <h2 class="card-title">{{ $post->title }}</h2>
             <p class="card-text">{{ $post->content }}</p>
             <p>投稿者: {{ $post->user->name }}</p> <!-- ユーザー名の表示 -->
+
+            <!-- いいねボタン -->
+            @auth
+            @if($post->isLikedBy(auth()->user()))
+            <form action="{{ route('posts.unlike', $post) }}" method="post">
+                @csrf
+                @method('delete')
+                <button type="submit">いいねを取り消す</button>
+            </form>
+            @else
+            <form action="{{ route('posts.like', $post) }}" method="post">
+                @csrf
+                <button type="submit">いいね</button>
+            </form>
+            @endif
+            @endauth
+
+            <!-- いいね数の表示 -->
+            <p>いいね数: {{ $post->likesCount() }}</p>
 
             @if ($post->image)
             <img src="{{ asset('storage/' . $post->image) }}" class="img-fluid" alt="Post Image" width="70" height="70">
@@ -37,7 +56,7 @@
         <div class="mt-3">
             <strong>Comments:</strong>
             @foreach ($post->comments->take(3) as $comment)
-            <p>{{ $post->user->name }}:  {{ $comment->body }}</p>
+            <p>{{ $post->user->name }}: {{ $comment->body }}</p>
             @endforeach
 
             @if ($post->comments->count() > 3)

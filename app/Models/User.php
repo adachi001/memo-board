@@ -42,4 +42,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    // ユーザーが特定の投稿にいいねしているかどうかを確認するメソッド
+    public function hasLiked(Post $post)
+    {
+        return $this->likes()->where('post_id', $post->id)->exists();
+    }
 }

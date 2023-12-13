@@ -6,6 +6,8 @@ use App\Http\Controllers\CommentController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\LikeController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +30,8 @@ Route::middleware(['auth', 'auth.user'])->group(function () {
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
     Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
     Route::get('/posts/{post}/comments', [CommentController::class, 'show'])->name('comments.show');
+    Route::post('/posts/{post}/like', [LikeController::class, 'like'])->name('posts.like');
+    Route::delete('/posts/{post}/unlike', [LikeController::class, 'unlike'])->name('posts.unlike');
 });
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
