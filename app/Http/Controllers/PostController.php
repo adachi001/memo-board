@@ -13,11 +13,16 @@ class PostController extends Controller
 {
     public function index(Request $request)
     {
-        $posts = Post::with('user')->get();
-        $posts = Post::getAllPosts();
-        $posts = Post::with('comments')->latest()->paginate(10);
+        $posts = Post::with('user')->get(); // 冗長なクエリ
+        $posts = Post::getAllPosts(); // 冗長なクエリ
+        $posts = Post::with('comments')->latest()->paginate(10); // 冗長なクエリ
         $query = Post::query();
-        $query = Post::with('user');
+        $query = Post::with('user'); // 冗長なクエリ
+        $posts = Post::with('user')->latest()->paginate(10);
+
+
+        // ユーザー情報を取得
+        $user = Auth::user();
 
         // 検索キーワードがある場合はタイトルで検索
         if ($request->has('search')) {
@@ -38,7 +43,7 @@ class PostController extends Controller
 
 
         $posts = $query->latest()->paginate(10);
-        return view('posts.index', compact('posts'));
+        return view('posts.index', compact('posts', 'user'));
 
     }
 

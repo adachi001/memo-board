@@ -21,6 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'icon',
+        'status_message',
     ];
 
     /**
@@ -52,5 +54,16 @@ class User extends Authenticatable
     public function hasLiked(Post $post)
     {
         return $this->likes()->where('post_id', $post->id)->exists();
+    }
+    
+    public function getUserIconFilenameAttribute()
+    {
+        // データベースに保存されているユーザーアイコンのファイル名のカラム名に合わせて修正
+        return $this->attributes['user_icon'] ?? null;; 
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
     }
 }

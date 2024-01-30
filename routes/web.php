@@ -7,7 +7,9 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\LikeController;
-
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfileEditController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,7 +39,16 @@ Route::middleware(['auth', 'auth.user'])->group(function () {
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
+Route::get('/users', [UserController::class, 'index']);
+Route::get('/user/{user}/posts', [UserController::class, 'posts'])->name('user.posts');
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [ProfileEditController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/update', [ProfileEditController::class, 'update'])->name('profile.update');
+    Route::get('/profile/show', [ProfileController::class, 'show'])->name('profile.show');
+});

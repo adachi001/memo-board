@@ -25,7 +25,7 @@
         <div class="card-body">
             <h2 class="card-title">{{ $post->title }}</h2>
             <p class="card-text">{{ $post->content }}</p>
-            <p>投稿者: {{ $post->user->name }}</p> <!-- ユーザー名の表示 -->
+            <a href="{{ route('user.posts', $user) }}">{{ $post->user->name }}</a><!-- ユーザー名の表示 -->
             <p>投稿日時: {{ $post->created_at }}</p>
 
             <!-- いいねボタン -->

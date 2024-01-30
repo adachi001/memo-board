@@ -13,14 +13,20 @@ class Post extends Model
     protected $fillable = ['title', 'content', 'image', 'audio', 'user_id'];
 
 
-    public function setImageAttribute($file)
+    public function setImageAttribute($value)
     {
-        $this->attributes['image'] = $file->store('images', 'public');
+        $imageName = time() . '.' . $value->getClientOriginalExtension();
+        Storage::disk('public')->putFileAs('images', $value, $imageName);
+
+        $this->attributes['image'] = 'images/' . $imageName;
     }
 
-    public function setAudioAttribute($file)
+    public function setAudioAttribute($value)
     {
-        $this->attributes['audio'] = $file->store('audio', 'public');
+        $audioName = time() . '.' . $value->getClientOriginalExtension();
+        Storage::disk('public')->putFileAs('audio', $value, $audioName);
+
+        $this->attributes['audio'] = 'audio/' . $audioName;
     }
     public static function getAllPosts()
     {
