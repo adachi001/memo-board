@@ -17,8 +17,16 @@ class UserController extends Controller
         return view('users.posts', compact('user', 'posts'));
     }
     public function showProfile($id)
-{
-    $user = User::findOrFail($id);
-    return view('users.profile', compact('user'));
-}
+    {
+        $user = User::findOrFail($id);
+        return view('users.profile', compact('user'));
+    }
+    // app/Http/Controllers/UserController.php
+
+    public function likes(User $user)
+    {
+        $likedPosts = $user->likes()->paginate(10);
+        return view('users.likes', compact('user', 'likedPosts'));
+    }
+
 }

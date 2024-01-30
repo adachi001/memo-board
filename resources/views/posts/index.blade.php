@@ -14,12 +14,14 @@
         <button href="{{ route('posts.index') }}">戻る</button>
         <!-- ソートリンク -->
         <div>
+            <a href="{{ route('users.likes', Auth::user()) }}" >いいねした投稿を見る</a>
+        </div>
+        <div>
             <a href="{{ route('posts.index', ['sort_by' => 'created_at', 'sort_order' => 'desc']) }}">新しい順</a>
             <a href="{{ route('posts.index', ['sort_by' => 'created_at', 'sort_order' => 'asc']) }}">古い順</a>
             <a href="{{ route('posts.index', ['sort_by' => 'likes_count', 'sort_order' => 'desc']) }}">いいね数順</a>
         </div>
     </form>
-
     @foreach ($posts as $post)
     <div class="card mb-3">
         <div class="card-body">

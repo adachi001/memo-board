@@ -35,6 +35,7 @@ Route::middleware(['auth', 'auth.user'])->group(function () {
     Route::post('/posts/{post}/like', [LikeController::class, 'like'])->name('posts.like');
     Route::delete('/posts/{post}/unlike', [LikeController::class, 'unlike'])->name('posts.unlike');
     Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+    Route::get('/users/{user}/likes', [UserController::class, 'likes'])->name('users.likes');
 });
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);

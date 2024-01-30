@@ -47,7 +47,7 @@ class User extends Authenticatable
 
     public function likes()
     {
-        return $this->hasMany(Like::class);
+        return $this->belongsToMany(Post::class, 'likes', 'user_id', 'post_id')->withTimestamps();
     }
 
     // ユーザーが特定の投稿にいいねしているかどうかを確認するメソッド
