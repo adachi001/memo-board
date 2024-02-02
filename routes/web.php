@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlbumController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
@@ -42,6 +43,7 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 Route::get('/users', [UserController::class, 'index']);
 Route::get('/user/{user}/posts', [UserController::class, 'posts'])->name('user.posts');
+Route::get('/albums/{album}', [AlbumController::class,'show'])->name('albums.show');
 
 Auth::routes();
 

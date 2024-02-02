@@ -10,7 +10,7 @@ use Image;
 
 class Post extends Model
 {
-    protected $fillable = ['title', 'content', 'image', 'audio', 'user_id'];
+    protected $fillable = ['title', 'album', 'content', 'image', 'audio', 'user_id'];
 
 
     public function setImageAttribute($value)

@@ -59,6 +59,7 @@ class PostController extends Controller
         $post = new Post([
             'title' => $request->input('title'),
             'content' => $request->input('content'),
+            'album' => $request->input('album'),
             // 他のフィールドをここで追加
             'user_id' => Auth::id(), // ログインユーザーのIDを取得して関連付ける
         ]);

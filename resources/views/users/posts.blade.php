@@ -23,12 +23,33 @@
     <h2>Posts by {{ $user->name }}</h2>
 
     @foreach ($user->posts as $post)
-        <div class="card mb-3">
-            <div class="card-body">
-                <h2 class="card-title">{{ $post->title }}</h2>
-                <p class="card-text">{{ $post->content }}</p>
-            <p>投稿者: {{ $user->name }}</p>
+    <div class="card mb-3">
+        <div class="card-body">
+            <h2 class="card-title">曲名: {{ $post->title }}</h2>
+            @if ($post->album)
+            <p>アルバム: <a href="{{ route('albums.show', $post->album) }}">{{ $post->album }}</a></p>
+            @endif
+            <p class="card-text">説明: {{ $post->content }}</p>
+            <p> 投稿者: <a href="{{ route('user.posts', $user) }}">{{ $post->user->name }}</a></p><!-- ユーザー名の表示 -->
             <p>投稿日時: {{ $post->created_at }}</p>
+            <!-- いいねボタン -->
+            @auth
+            @if($post->isLikedBy(auth()->user()))
+            <form action="{{ route('posts.unlike', $post) }}" method="post">
+                @csrf
+                @method('delete')
+                <button type="submit">いいねを取り消す</button>
+            </form>
+            @else
+            <form action="{{ route('posts.like', $post) }}" method="post">
+                @csrf
+                <button type="submit">いいね</button>
+            </form>
+            @endif
+            @endauth
+
+            <!-- いいね数の表示 -->
+            <p>いいね数: {{ $post->likesCount() }}</p>
 
             <!-- 他の表示内容や操作ボタンを追加 -->
 
@@ -57,7 +78,6 @@
             </a>
             @endif
         </div>
-
         <!-- コメントの投稿フォーム -->
         <form action="{{ route('comments.store', $post) }}" method="post" class="mt-3">
             @csrf

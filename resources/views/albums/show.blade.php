@@ -1,33 +1,17 @@
-<!-- resources/views/posts/index.blade.php -->
+<!-- resources/views/albums/show.blade.php -->
 
 @extends('layouts.app')
 
 @section('content')
 <div class="container mt-5">
-    <h1>Post List</h1>
+    <h1>Album: {{ $album }}</h1>
 
-    <a href="{{ route('posts.create') }}" class="btn btn-primary mb-3">Create Post</a>
-    <!-- 検索フォーム -->
-    <form action="{{ route('posts.index') }}" method="GET">
-        <input type="text" name="search" placeholder="タイトルを検索">
-        <button type="submit">検索</button>
-        <button href="{{ route('posts.index') }}">戻る</button>
-        <!-- ソートリンク -->
-        <div>
-            <a href="{{ route('users.likes', Auth::user()) }}" >いいねした投稿を見る</a>
-        </div>
-        <div>
-            <a href="{{ route('posts.index', ['sort_by' => 'created_at', 'sort_order' => 'desc']) }}">新しい順</a>
-            <a href="{{ route('posts.index', ['sort_by' => 'created_at', 'sort_order' => 'asc']) }}">古い順</a>
-            <a href="{{ route('posts.index', ['sort_by' => 'likes_count', 'sort_order' => 'desc']) }}">いいね数順</a>
-        </div>
-    </form>
     @foreach ($posts as $post)
     <div class="card mb-3">
         <div class="card-body">
             <h2 class="card-title">曲名: {{ $post->title }}</h2>
             @if ($post->album)
-                <p>アルバム: <a href="{{ route('albums.show', $post->album) }}">{{ $post->album }}</a></p>
+            <p>アルバム: <a href="{{ route('albums.show', $post->album) }}">{{ $post->album }}</a></p>
             @endif
             <p class="card-text">説明: {{ $post->content }}</p>
             <p> 投稿者: <a href="{{ route('user.posts', $user) }}">{{ $post->user->name }}</a></p><!-- ユーザー名の表示 -->
@@ -51,6 +35,8 @@
             <!-- いいね数の表示 -->
             <p>いいね数: {{ $post->likesCount() }}</p>
 
+            <!-- 他の表示内容や操作ボタンを追加 -->
+
             @if ($post->image)
             <img src="{{ asset('storage/' . $post->image) }}" class="img-fluid" alt="Post Image" width="70" height="70">
             @endif
@@ -62,6 +48,7 @@
             </audio>
             @endif
         </div>
+
         <!-- コメントの表示 -->
         <div class="mt-3">
             <strong>Comments:</strong>
@@ -74,7 +61,6 @@
                 <p>他 {{ $post->comments->count() - 3 }} 件のコメントがあります。</p>
             </a>
             @endif
-
         </div>
         <!-- コメントの投稿フォーム -->
         <form action="{{ route('comments.store', $post) }}" method="post" class="mt-3">
@@ -86,8 +72,6 @@
             <button type="submit" class="btn btn-primary">Post Comment</button>
         </form>
     </div>
-    <!-- ページネーション -->
-    {{ $posts->links() }}
     @endforeach
 </div>
 @endsection
