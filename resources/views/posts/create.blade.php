@@ -32,6 +32,10 @@
             <label for="audio" class="form-label">Audio (mp3):</label>
             <input type="file" class="form-control" name="audio">
         </div>
+        <div class="mb-3">
+            <label for="video" class="form-label">動画ファイル:</label>
+            <input type="file" class="form-control" name="video" accept="video/*">
+        </div>
 
         <button type="submit" class="btn btn-primary">Create Post</button>
     </form>

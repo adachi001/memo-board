@@ -60,6 +60,7 @@ class PostController extends Controller
             'title' => $request->input('title'),
             'content' => $request->input('content'),
             'album' => $request->input('album'),
+            'video' => $request->input('mimes:mp4,avi,wmv,mov|max:10240'),
             // 他のフィールドをここで追加
             'user_id' => Auth::id(), // ログインユーザーのIDを取得して関連付ける
         ]);
@@ -74,6 +75,10 @@ class PostController extends Controller
         if ($request->hasFile('audio')) {
             $audio = $request->file('audio');
             $post->setAudioAttribute($audio);
+        }
+        if ($request->hasFile('video')) {
+            $video = $request->file('video');
+            $post->setVideoAttribute($video);
         }
 
         $post->save();

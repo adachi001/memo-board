@@ -63,6 +63,13 @@
                 Your browser does not support the audio element.
             </audio>
             @endif
+
+            @if ($post->video)
+            <video width="320" height="240" controls>
+                <source src="{{ asset('storage/' . $post->video) }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            @endif
         </div>
 
         <!-- コメントの表示 -->

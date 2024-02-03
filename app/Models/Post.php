@@ -10,7 +10,7 @@ use Image;
 
 class Post extends Model
 {
-    protected $fillable = ['title', 'album', 'content', 'image', 'audio', 'user_id'];
+    protected $fillable = ['title', 'album', 'content', 'image', 'audio', 'video', 'user_id'];
 
 
     public function setImageAttribute($value)
@@ -28,6 +28,16 @@ class Post extends Model
 
         $this->attributes['audio'] = 'audio/' . $audioName;
     }
+    public function setVideoAttribute($value)
+    {
+        if ($value) {
+            $videoName = time() . '.' . $value->getClientOriginalExtension();
+            Storage::disk('public')->putFileAs('video', $value, $videoName);
+
+            $this->attributes['video'] = 'video/' . $videoName;
+        }
+    }
+
     public static function getAllPosts()
     {
         return self::latest()->get();
