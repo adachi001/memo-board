@@ -1,12 +1,10 @@
 <?php
-// app/Http/Controllers/ProfileEditController.php
-
-// app/Http/Controllers/ProfileEditController.php
 
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileEditController extends Controller
 {
@@ -16,6 +14,8 @@ class ProfileEditController extends Controller
         return view('profile.edit', compact('user'));
     }
 
+    protected $defaultUserIcon = 'user_icon/default.png';
+
     public function update(Request $request)
     {
         $user = Auth::user();
@@ -24,12 +24,10 @@ class ProfileEditController extends Controller
         // 画像の処理や保存処理を行う
         if ($request->hasFile('user_icon')) {
             $userIcon = $request->file('user_icon');
-            $filename = time() . '.' . $userIcon->getClientOriginalExtension();
-            $location = public_path('path/to/save/directory/' . $filename);
-            $userIcon->move('path/to/save/directory/', $filename);
-
-            // ユーザーのプロフィールに画像のパスを保存
-            $user->img_path = $filename;
+            $user->setUserIconAttribute($userIcon);
+        } else {
+            // ファイルがアップロードされなかった場合はデフォルトのアイコンを設定
+            $user->user_icon = $this->defaultUserIcon;
         }
 
         $user->save();

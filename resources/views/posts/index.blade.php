@@ -5,13 +5,13 @@
 @section('content')
 <div class="container mt-5">
     <h1>Post List</h1>
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 
     <a href="{{ route('posts.create') }}" class="btn btn-primary mb-3">Create Post</a>
     <!-- 検索フォーム -->
     <form action="{{ route('posts.index') }}" method="GET">
         <input type="text" name="search" placeholder="タイトルを検索">
         <button type="submit">検索</button>
-        <button href="{{ route('posts.index') }}">戻る</button>
         <!-- ソートリンク -->
         <div>
             <a href="{{ route('users.likes', Auth::user()) }}">いいねした投稿を見る</a>
@@ -30,7 +30,16 @@
             <p>アルバム: <a href="{{ route('albums.show', $post->album) }}">{{ $post->album }}</a></p>
             @endif
             <p class="card-text">説明: {{ $post->content }}</p>
-            <p> 投稿者: <a href="{{ route('user.posts', $user) }}">{{ $post->user->name }}</a></p><!-- ユーザー名の表示 -->
+            <p> 投稿者: 
+                @if($post->user->user_icon)
+                    <a href="{{ route('user.posts', ['user' => $post->user]) }}">
+                        <img src="{{ asset('storage/' . $post->user->user_icon) }}" class="img-fluid circular-profile" alt="User Icon" width="30" height="30">
+                    </a>
+                @else
+                    <img src="{{ asset('storage/' . $post->user->defaultUserIcon) }}" class="img-fluid circular-profile" alt="Default User Icon" width="30" height="30">
+                @endif
+                {{ $post->user->name }}
+            </p><!-- ユーザー名の表示 -->
             <p>投稿日時: {{ $post->created_at }}</p>
             <!-- いいねボタン -->
             @auth
@@ -68,7 +77,6 @@
                 Your browser does not support the video tag.
             </video>
             @endif
-
         </div>
         <!-- コメントの表示 -->
         <div class="mt-3">
@@ -82,7 +90,6 @@
                 <p>他 {{ $post->comments->count() - 3 }} 件のコメントがあります。</p>
             </a>
             @endif
-
         </div>
         <!-- コメントの投稿フォーム -->
         <form action="{{ route('comments.store', $post) }}" method="post" class="mt-3">
@@ -94,8 +101,7 @@
             <button type="submit" class="btn btn-primary">Post Comment</button>
         </form>
     </div>
-    <!-- ページネーション -->
-    {{ $posts->links() }}
     @endforeach
+    <!-- ページネーション -->
 </div>
 @endsection

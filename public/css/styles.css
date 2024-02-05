@@ -1,0 +1,5 @@
+/* public/css/styles.css（例として） */
+
+img.circular-profile {
+    border-radius: 50%;
+}

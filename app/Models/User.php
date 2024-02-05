@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Storage;
+
 
 class User extends Authenticatable
 {
@@ -21,7 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'icon',
+        'user_icon',
         'status_message',
     ];
 
@@ -55,12 +57,28 @@ class User extends Authenticatable
     {
         return $this->likes()->where('post_id', $post->id)->exists();
     }
-    
-    public function getUserIconFilenameAttribute()
-    {
-        // データベースに保存されているユーザーアイコンのファイル名のカラム名に合わせて修正
-        return $this->attributes['user_icon'] ?? null;; 
+    protected $defaultUserIcon = 'user_icon/default.png';
+
+
+    public function setUserIconAttribute($value)
+{
+    if (is_string($value)) {
+        // 既にファイルパスが渡されている場合の処理
+        $this->attributes['user_icon'] = $value;
+    } elseif ($value) {
+        // アップロードされたファイルの場合の処理
+        $userIconName = time() . '.' . $value->getClientOriginalExtension();
+        Storage::disk('public')->putFileAs('user_icon', $value, $userIconName);
+        $this->attributes['user_icon'] = 'user_icon/' . $userIconName;
+    } else {
+        // デフォルトのアイコンなど、適切な処理を追加
+        $this->attributes['user_icon'] = asset('storage/' . $this->defaultUserIcon);
     }
+}
+
+
+
+
 
     public function posts()
     {

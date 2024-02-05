@@ -17,7 +17,7 @@
                     {{ __('You are logged in!') }}
                 </div>
             </div>
-            <a href="{{ route('posts.index') }}">Go to Posts Index</a>
+            <a href="{{ route('profile.edit') }}">Go to profile settings</a>
         </div>
     </div>
 </div>

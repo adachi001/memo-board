@@ -6,7 +6,7 @@
     <div class="container">
         <h1>プロフィール編集</h1>
 
-        <form action="{{ route('profile.update') }}" method="POST">
+        <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -16,13 +16,8 @@
             </div>
 
             <div class="mb-3">
-                <label for="email" class="form-label">メールアドレス</label>
-                <input type="email" class="form-control" id="email" name="email" value="{{ old('email', $user->email) }}">
-            </div>
-
-            <div class="mb-3">
-                <label for="icon" class="form-label">アイコン</label>
-                <input type="file" class="form-control" id="icon" name="icon">
+                <label for="user_icon" class="form-label">ユーザーアイコン</label>
+                <input type="file" class="form-control" id="icon" name="user_icon" accept="image/*">
             </div>
 
             <div class="mb-3">

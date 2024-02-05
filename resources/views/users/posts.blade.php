@@ -1,22 +1,22 @@
 <!-- resources/views/users/posts.blade.php -->
 
 <!-- resources/views/users/posts.blade.php -->
-
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 @extends('layouts.app')
 
 @section('content')
 <div class="container mt-5">
-    <h1>{{ $user->name }}'s Profile</h1>
+    <h1>@if($user->user_icon)<a href="{{ route('user.posts', ['user' => $user]) }}">
+                <img src="{{ asset('storage/' . $user->user_icon) }}" class="img-fluid circular-profile" alt="User Icon" width="70"
+                    height="70"></a>
+                @else($user->defaultUserIcon)
+                <img src="{{ asset('storage/' . $user->defaultUserIcon) }}" class="img-fluid circular-profile" alt="Default User Icon"
+                    width="70" height="70">
+                @endif{{ $user->name }}'s Profile</h1>
 
     <div class="card mb-3">
         <div class="card-body">
             <h5 class="card-title">ステータスメッセージ: {{ $user->status_message ?? 'No status message' }}</h5>
-            @if ($user->icon)
-                <img src="{{ asset('path/to/save/directory/' . $user->icon) }}" alt="User Icon" width="50" height="50">
-            @else
-                <!-- デフォルトのアイコンが存在しない場合の代替として何か表示する -->
-                <img src="{{ asset('path/to/default/icon.jpg') }}" alt="Default Icon" width="50" height="50">
-            @endif
         </div>
     </div>
 
@@ -30,7 +30,13 @@
             <p>アルバム: <a href="{{ route('albums.show', $post->album) }}">{{ $post->album }}</a></p>
             @endif
             <p class="card-text">説明: {{ $post->content }}</p>
-            <p> 投稿者: <a href="{{ route('user.posts', $user) }}">{{ $post->user->name }}</a></p><!-- ユーザー名の表示 -->
+            <p> 投稿者: @if($user->user_icon)<a href="{{ route('user.posts', ['user' => $user]) }}">
+                <img src="{{ asset('storage/' . $user->user_icon) }}" class="img-fluid circular-profile" alt="User Icon" width="30"
+                    height="30"></a>
+                @else($user->defaultUserIcon)
+                <img src="{{ asset('storage/' . $user->defaultUserIcon) }}" class="img-fluid circular-profile" alt="Default User Icon"
+                    width="30" height="30">
+                @endif{{ $post->user->name }}</p><!-- ユーザー名の表示 -->
             <p>投稿日時: {{ $post->created_at }}</p>
             <!-- いいねボタン -->
             @auth

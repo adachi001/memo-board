@@ -9,12 +9,24 @@
     @foreach ($likedPosts as $post)
     <div class="card mb-3">
         <div class="card-body">
-            <h2 class="card-title">曲名: {{ $post->title }}</h2>
+            <h2 class="card-title">曲名: {{ $post->title }}</h2>@if($user->user_icon)<a href="{{ route('user.posts', ['user' => $post->user]) }}">
+                <img src="{{ asset('storage/' . $user->user_icon) }}" class="img-fluid circular-profile" alt="User Icon" width="30"
+                    height="30"></a>
+                @else($user->defaultUserIcon)
+                <img src="{{ asset('storage/' . $user->defaultUserIcon) }}" class="img-fluid circular-profile" alt="Default User Icon"
+                    width="30" height="30">
+                @endif{{ $post->user->name }}
             @if ($post->album)
             <p>アルバム: <a href="{{ route('albums.show', $post->album) }}">{{ $post->album }}</a></p>
             @endif
             <p class="card-text">説明: {{ $post->content }}</p>
-            <p> 投稿者: <a href="{{ route('user.posts', $user) }}">{{ $post->user->name }}</a></p><!-- ユーザー名の表示 -->
+            <p> 投稿者: @if($user->user_icon)<a href="{{ route('user.posts', ['user' => $post->user]) }}">
+                <img src="{{ asset('storage/' . $user->user_icon) }}" class="img-fluid circular-profile" alt="User Icon" width="30"
+                    height="30"></a>
+                @else($user->defaultUserIcon)
+                <img src="{{ asset('storage/' . $user->defaultUserIcon) }}" class="img-fluid circular-profile" alt="Default User Icon"
+                    width="30" height="30">
+                @endif{{ $post->user->name }}</p><!-- ユーザー名の表示 -->
             <p>投稿日時: {{ $post->created_at }}</p>
 
             <!-- いいねボタン -->
